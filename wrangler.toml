@@ -1,0 +1,7 @@
+name = "swot-ai"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "public"
+
+# Gives the Functions code access to Cloudflare's free Workers AI (no API key needed).
+[ai]
+binding = "AI"

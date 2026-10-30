@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SWOT AI</title>
+<meta name="description" content="SWOT AI helps college students understand their Strengths, Weaknesses, Opportunities and Threats.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<style>
+:root{color-scheme:dark;--bg:#0b0d14;--panel:#11141d;--panel2:#171b27;--line:#242a3a;--text:#e8ebf4;--mute:#8d96ad;--a:#7c5cff;--b:#22d3ee;--err:#ff6b7a;--s:#34d399;--w:#fbbf24;--o:#60a5fa;--t:#f87171;--r:14px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;height:100%;background:radial-gradient(900px 500px at 80% -10%,#1d1a45 0,transparent 60%),var(--bg);color:var(--text);font:15px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible{outline:2px solid var(--b);outline-offset:2px}
+.app{display:flex;height:100%}
+aside{width:272px;flex:none;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:14px;gap:12px;transition:transform .25s}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+.logo{width:34px;height:34px;flex:none}
+.grad{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.new{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;border-radius:12px;border:1px solid var(--line);background:linear-gradient(135deg,#2a1f6b,#0e4a5a);font-weight:600}
+.new:hover{filter:brightness(1.2)}
+.hist{flex:1;overflow:auto;display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none}
+.hist li{display:flex;align-items:center;border-radius:10px}
+.hist li.on,.hist li:hover{background:var(--panel2)}
+.hist .t{flex:1;min-width:0;text-align:left;background:none;border:0;padding:9px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist .x{background:none;border:0;color:var(--mute);padding:6px 10px;border-radius:8px;font-size:16px}
+.hist .x:hover{color:var(--err)}
+.note{font-size:11.5px;color:var(--mute);line-height:1.4}
+main{flex:1;min-width:0;display:flex;flex-direction:column}
+.top{display:none;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.burger{background:none;border:1px solid var(--line);border-radius:10px;width:38px;height:38px;font-size:18px}
+.scroll{flex:1;overflow:auto;scroll-behavior:smooth}
+.wrap{max-width:780px;margin:0 auto;padding:24px 18px 12px}
+.msg{display:flex;gap:12px;margin:18px 0;animation:up .3s both}
+.msg.user{justify-content:flex-end}
+.av{width:30px;height:30px;flex:none;border-radius:9px;background:linear-gradient(135deg,var(--a),var(--b));display:grid;place-items:center;font-weight:800;font-size:13px;color:#06121a}
+.body{min-width:0;max-width:100%;flex:1}
+.user .body{flex:none}
+.user .bubble{background:var(--panel2);border:1px solid var(--line);padding:10px 14px;border-radius:16px 16px 4px 16px;max-width:560px;white-space:pre-wrap;overflow-wrap:anywhere}
+.ai .bubble{overflow-wrap:anywhere;padding-top:3px}
+.bubble p{margin:0 0 .7em}.bubble p:last-child{margin:0}
+.bubble h4{margin:1em 0 .3em;font-size:15.5px;color:var(--b)}
+.bubble ul,.bubble ol{margin:.4em 0 .8em;padding-left:1.3em}
+.bubble code{background:#1c2133;padding:1px 6px;border-radius:6px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.3px;padding:2px 10px;border-radius:99px;margin-bottom:6px;border:1px solid currentColor}
+.c-S{color:var(--s)}.c-W{color:var(--w)}.c-O{color:var(--o)}.c-T{color:var(--t)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 12px}
+.card{background:var(--panel);border:1px solid var(--line);border-left:4px solid currentColor;border-radius:12px;padding:12px 14px}
+.card .lab{font-weight:700;font-size:13.5px;margin-bottom:4px}
+.card .lab span{font-weight:500;opacity:.8}
+.card p{margin:0;color:var(--text)}
+.choices{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.choices button{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 16px;font-weight:600}
+.choices button:hover{border-color:var(--a);background:var(--panel2)}
+.choices button.yes{background:linear-gradient(135deg,#2a1f6b,#0e4a5a)}
+.err{border:1px solid var(--err);color:var(--err);background:#2a1218;border-radius:12px;padding:10px 12px;font-size:14px;margin-top:6px}
+.err button{margin-left:8px;background:none;border:1px solid var(--err);color:var(--err);border-radius:8px;padding:2px 10px}
+.dots{display:inline-flex;gap:5px;padding:8px 0}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--b);animation:b 1.1s infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+.composer{padding:8px 18px 26px}
+.box{max-width:780px;margin:0 auto;display:flex;align-items:flex-end;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:8px 8px 8px 16px}
+.box:focus-within{border-color:var(--a)}
+textarea{flex:1;resize:none;background:none;border:0;color:var(--text);font:inherit;max-height:180px;padding:7px 0;outline:none}
+textarea::placeholder{color:var(--mute)}
+.send{width:40px;height:40px;flex:none;border:0;border-radius:12px;background:linear-gradient(135deg,var(--a),var(--b));color:#06121a;font-size:18px;font-weight:800}
+.send:disabled{opacity:.4;cursor:not-allowed}
+.send.stop{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.foot{text-align:center;color:var(--mute);font-size:11.5px;margin-top:8px}
+.wm{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(6px + env(safe-area-inset-bottom,0px));font-size:11px;letter-spacing:.4px;color:var(--mute);opacity:.65;pointer-events:none;z-index:5}
+.back{display:none}
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes b{0%,80%,100%{transform:scale(.6);opacity:.5}40%{transform:scale(1);opacity:1}}
+@media(max-width:760px){
+ aside{position:fixed;z-index:20;inset:0 auto 0 0;padding-top:calc(14px + env(safe-area-inset-top,0px));transform:translateX(-102%);box-shadow:8px 0 30px #0008}
+ aside.open{transform:none}
+ .back.open{display:block;position:fixed;inset:0;z-index:10;background:#0008}
+ .top{display:flex}.cards{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+ <aside id="side" aria-label="Analyses">
+  <div class="brand"><svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs><path d="M20 2l15 9v18l-15 9-15-9V11z" fill="url(#g)"/><path d="M25 14c-1-2-9-3-9 1 0 5 10 2 10 7 0 4-9 4-11 1" fill="none" stroke="#06121a" stroke-width="3" stroke-linecap="round"/></svg><span class="grad">SWOT AI</span></div>
+  <button class="new" id="newBtn">＋ New analysis</button>
+  <ul class="hist" id="hist"></ul>
+  <div class="note" id="note"></div>
+ </aside>
+ <div class="back" id="back"></div>
+ <main>
+  <div class="top"><button class="burger" id="burger" aria-label="Open analyses">☰</button><span class="brand grad">SWOT AI</span></div>
+  <div class="scroll" id="scroll"><div id="view"></div></div>
+  <div class="composer">
+   <div class="box">
+    <textarea id="inp" rows="1" placeholder="Type your answer…" aria-label="Your message"></textarea>
+    <button class="send" id="send" aria-label="Send message">↑</button>
+   </div>
+   <div class="foot">Enter to send · Shift + Enter for a new line · AI can make mistakes</div>
+  </div>
+ </main>
+</div>
+<div class="wm" aria-hidden="true">Tanmay Khairnar</div>
+<script>
+const $=s=>document.querySelector(s);
+const KEY='swotai:v2';
+const CATS=[
+{k:'S',n:'Strengths',e:'Strengths are things you are good at or advantages you already have.',x:'For example, you might learn coding quickly, communicate well, edit videos, or understand concepts faster than your classmates.',q:'What do you think are your biggest strengths? Tell me in your own words.',ph:'Describe your strengths…'},
+{k:'W',n:'Weaknesses',e:'Weaknesses are things you struggle with or skills and habits you want to improve.',x:'For example, you might procrastinate, struggle with programming basics, or find it difficult to manage your time after college.',q:'What are the main things you struggle with or want to improve?',ph:'Describe what you struggle with…'},
+{k:'O',n:'Opportunities',e:'Opportunities are resources or chances available to you that could help you grow.',x:'For example, you might have access to free online courses, college clubs, internships, hackathons, or opportunities to build projects.',q:'What opportunities or useful resources are available to you right now?',ph:'Describe your opportunities…'},
+{k:'T',n:'Threats',e:'Threats are outside factors or obstacles that could make your progress more difficult.',x:'For example, you might face financial limitations, intense competition for internships, a demanding college schedule, or unreliable internet access.',q:'What external problems or obstacles could make it harder for you to achieve your goals?',ph:'Describe your obstacles…'}];
+const INS=[['strength','Your biggest advantage','Strength'],['weakness','Your biggest obstacle','Weakness'],['opportunity','Your best opportunity','Opportunity'],['threat','Your biggest risk','Threat']];
+const WELCOME="Hi, welcome to SWOT AI! 👋\n\nI'll help you understand your current situation with a simple SWOT analysis: your **Strengths**, **Weaknesses**, **Opportunities** and **Threats**.\n\nI'll ask about them one at a time, so just answer in your own words. Only if you want it, I can then turn your answers into a practical action plan that fits around your college day. Let's begin!";
+const PERM="Now that we've understood your SWOT, would you like me to create a practical action plan based on it?";
+const DECLINE="No problem at all, there's no pressure. Would you like to talk through your SWOT, or improve any of your answers?";
+const BASE="You are SWOT AI, a friendly, supportive guide for college students who attend college from 9 AM to 4 PM and have limited time and energy outside it. Use simple, encouraging language. Never invent facts about the student; only use what they told you.";
+
+/* ---------- AI layer ---------- */
+const AI={
+  /* Website side only: sends the prompt to our own /api/ai endpoint (see functions/api/ai.js).
+     No API key and no model name live in this browser code. */
+  async ask(text,{signal}={}){
+    let res;
+    try{res=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:text}),signal})}
+    catch(e){if(e&&e.name==='AbortError')throw e;throw{code:'unavailable',message:'Could not reach the AI service. Check your internet connection and press Retry.'}}
+    let j=null;try{j=await res.json()}catch(e){}
+    if(!res.ok||!j||typeof j.text!=='string'){
+      throw{code:res.status===429?'rate_limited':'error',message:(j&&j.error)||'The AI service had a problem. Please press Retry.'};
+    }
+    return{text:j.text};
+  }
+};
+
+/* ---------- state ---------- */
+let S={chats:[],active:null},busy=false,typing=false,ctrl=null,stored=true,lastErr=null,aiDown=false;
+try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){stored=false}
+if(!Array.isArray(S.chats))S={chats:[],active:null};
+const cur=()=>S.chats.find(c=>c.id===S.active)||null;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){stored=false;note()}}
+function note(){$('#note').textContent=(stored?'Your analyses are saved in this browser on this device only.':'Browser storage is unavailable here, so your answers last only until you close this page.')+(aiDown?' The AI service could not be reached, so personalised insights and plans cannot be generated right now.':'')}
+
+/* ---------- helpers ---------- */
+const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const inl=t=>t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>');
+function md(t){
+  let o='',list=null;const close=()=>{if(list){o+='</'+list+'>';list=null}};
+  for(const raw of esc(t||'').split('\n')){const l=raw.trim();let m;
+    if(!l){close();continue}
+    if(m=l.match(/^#{1,4}\s+(.*)/)){close();o+='<h4>'+inl(m[1])+'</h4>'}
+    else if(m=l.match(/^[-*•]\s+(.*)/)){if(list!=='ul'){close();o+='<ul>';list='ul'}o+='<li>'+inl(m[1])+'</li>'}
+    else if(m=l.match(/^\d+[.)]\s+(.*)/)){if(list!=='ol'){close();o+='<ol>';list='ol'}o+='<li>'+inl(m[1])+'</li>'}
+    else{close();o+='<p>'+inl(l)+'</p>'}}
+  close();return o;
+}
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const el=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e};
+const toBottom=()=>{const s=$('#scroll');s.scrollTop=s.scrollHeight};
+const closeSide=()=>{$('#side').classList.remove('open');$('#back').classList.remove('open')};
+const parseJ=t=>{try{const m=(t||'').match(/\{[\s\S]*\}/);return m?JSON.parse(m[0]):null}catch(e){return null}};
+function friendly(e){
+  const c=e&&e.code;
+  if(c==='rate_limited')return 'The free AI allowance may be used up for today (it resets at 00:00 UTC). Please try again later.';
+  return (e&&e.message)||'Something went wrong. Please try again.';
+}
+function onFail(e){if(e&&e.code==='unavailable'){aiDown=true;note()}lastErr=friendly(e)}
+const askMsg=i=>{const c=CATS[i];return{role:'assistant',tag:c.k,step:i,content:c.e+'\n\n'+c.x+'\n\n**'+c.q+'**'}};
+function ctx(c){
+  let t='Student\'s answers:\n';
+  CATS.forEach((k,i)=>t+='- '+k.n+': '+(c.ans[i]||'(not answered)')+'\n');
+  if(c.time)t+='Time they said they can dedicate: '+c.time+'\n';
+  return t;
+}
+
+/* ---------- rendering ---------- */
+function renderHist(){
+  const ul=$('#hist');ul.innerHTML='';
+  S.chats.slice().sort((a,b)=>b.ts-a.ts).forEach(c=>{
+    const li=el('li',c.id===S.active?'on':'');
+    const t=el('button','t');t.textContent=c.title;t.title=c.title;
+    t.onclick=()=>{if(busy)return;S.active=c.id;lastErr=null;save();render();closeSide()};
+    const x=el('button','x','✕');x.setAttribute('aria-label','Delete '+c.title);x.onclick=()=>del(c.id);
+    li.append(t,x);ul.append(li);
+  });
+}
+function bubbleFor(m,isLast,c){
+  const row=el('div','msg '+(m.role==='user'?'user':'ai'));
+  if(m.role==='assistant')row.append(el('div','av','S'));
+  const body=el('div','body');
+  if(m.tag){const k=CATS.find(x=>x.k===m.tag);body.append(el('span','badge c-'+m.tag,m.tag+' · '+k.n+(m.step!=null?' · Step '+(m.step+1)+' of 4':'')))}
+  const b=el('div','bubble');
+  if(m.role==='user')b.textContent=m.content;
+  else if(!m.content&&!m.ins)b.innerHTML='<span class="dots" aria-label="SWOT AI is thinking"><i></i><i></i><i></i></span>';
+  else b.innerHTML=md(m.content);
+  if(m.ins){
+    b.innerHTML='';
+    const g=el('div','cards');
+    INS.forEach(([k,l,s],i)=>{const kk='SWOT'[i];g.append(el('div','card c-'+kk,'<div class="lab">'+l+' <span>['+s+']</span></div><p style="color:var(--text)">'+esc(m.ins[k])+'</p>'))});
+    b.append(g);
+    if(m.ins.followup)b.append(el('p','',esc(m.ins.followup)));
+  }
+  body.append(b);
+  if(m.kind==='perm'&&isLast&&!busy&&c.step==='perm'){
+    const ch=el('div','choices');
+    const y=el('button','yes','Yes, create my action plan.');y.onclick=()=>choose(true);
+    const n=el('button','','No, not right now.');n.onclick=()=>choose(false);
+    ch.append(y,n);body.append(ch);
+  }
+  row.append(body);return row;
+}
+const PH={perm:'Or type your reply…',time:'e.g. 1 hour on weekdays, 3 hours on weekends',chat:'Type a message…'};
+function render(){
+  renderHist();
+  const v=$('#view');v.innerHTML='';
+  const c=cur();if(!c)return;
+  const wrap=el('div','wrap');
+  c.msgs.forEach((m,i)=>wrap.append(bubbleFor(m,i===c.msgs.length-1,c)));
+  if(typing){const r=el('div','msg ai');r.append(el('div','av','S'),el('div','body','<div class="bubble"><span class="dots" aria-label="SWOT AI is thinking"><i></i><i></i><i></i></span></div>'));wrap.append(r)}
+  if(lastErr&&!busy){const e=el('div','err',esc(lastErr));const rb=el('button','','Retry');rb.onclick=retry;e.append(rb);wrap.append(e)}
+  v.append(wrap);toBottom();
+  $('#inp').placeholder=typeof c.step==='number'?CATS[c.step].ph:(PH[c.step]||PH.chat);
+  const s=$('#send');s.classList.toggle('stop',busy);s.textContent=busy?'■':'↑';
+  s.setAttribute('aria-label',busy?'Stop generating':'Send message');
+  s.disabled=!busy&&!$('#inp').value.trim();
+}
+function updateLast(text){
+  const b=[...document.querySelectorAll('.msg.ai .bubble')].pop();
+  if(b){b.innerHTML=md(text);toBottom()}
+}
+
+/* ---------- flow ---------- */
+function newChat(){
+  if(busy)return;
+  const c={id:uid(),title:'Analysis · '+new Date().toLocaleDateString(undefined,{day:'numeric',month:'short'})+' '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),ts:Date.now(),step:0,ans:['','','',''],fu:false,time:'',planDone:false,msgs:[{role:'assistant',content:WELCOME},askMsg(0)]};
+  S.chats.push(c);S.active=c.id;lastErr=null;save();render();closeSide();
+}
+function del(id){
+  if(busy&&id===S.active)return;
+  S.chats=S.chats.filter(c=>c.id!==id);
+  if(S.active===id)S.active=null;
+  if(!S.chats.length)return newChat();
+  if(!S.active)S.active=S.chats[0].id;
+  save();render();
+}
+function send(text){
+  text=(text||'').trim();
+  const c=cur();if(busy||!text||!c)return;
+  lastErr=null;
+  c.msgs.push({role:'user',content:text});
+  const i=$('#inp');i.value='';fit();
+  c.ts=Date.now();
+  if(typeof c.step==='number')answer(c,text);
+  else if(c.step==='time'){c.time=text;plan()}
+  else converse();
+}
+async function answer(c,text){
+  const i=c.step;
+  if(c.fu){c.ans[i]+=' '+text;c.fu=false;return next(c)}
+  c.ans[i]=text;
+  busy=true;typing=true;render();
+  let f=null;
+  try{
+    const r=await AI.ask(BASE+'\nThe student is answering a SWOT question about '+CATS[i].n+'. Question: "'+CATS[i].q+'"\nTheir answer: "'+text+'"\nDecide whether the answer contains at least one concrete, usable point. Be lenient: only treat it as unclear if it is vague, off-topic, or like "idk". Reply ONLY with JSON: {"clear":true or false,"followup":"one short, simple, friendly follow-up question, or empty string if clear"}');
+    const j=parseJ(r&&r.text);if(j&&j.clear===false&&j.followup)f=String(j.followup);
+  }catch(e){if(e&&e.code==='unavailable'){aiDown=true;note()}}
+  busy=false;typing=false;
+  if(f){c.fu=true;c.msgs.push({role:'assistant',tag:CATS[i].k,content:f});save();render();return}
+  next(c);
+}
+function next(c){
+  const i=c.step;
+  if(i<3){c.step=i+1;c.msgs.push(askMsg(i+1));save();render()}
+  else{c.step='ins';save();render();insights()}
+}
+async function insights(){
+  const c=cur();busy=true;typing=true;lastErr=null;render();
+  try{
+    const r=await AI.ask(BASE+'\n\n'+ctx(c)+'\nWrite four short personalised insights (2-3 simple sentences each, addressed to "you") that interpret ONLY what the student wrote. Do not invent facts, and do not claim an opportunity exists unless they mentioned it or it is a reasonable inference from their words. If an answer is too thin, say so kindly. Be encouraging. Also write one relevant reflective follow-up question about the insights (not about an action plan). Reply ONLY with valid JSON, no markdown: {"strength":"","weakness":"","opportunity":"","threat":"","followup":""}');
+    const j=parseJ(r&&r.text);
+    if(!j||!INS.every(([k])=>typeof j[k]==='string'&&j[k]))throw{message:'The AI reply could not be read. Please press Retry.'};
+    c.msgs.push({role:'assistant',content:INS.map(([k,l])=>l+': '+j[k]).join('\n')+'\n'+(j.followup||''),ins:j});
+    c.msgs.push({role:'assistant',content:PERM,kind:'perm'});
+    c.step='perm';
+  }catch(e){onFail(e)}
+  busy=false;typing=false;save();render();
+}
+function choose(yes){
+  const c=cur();if(busy||!c)return;
+  c.msgs.push({role:'user',content:yes?'Yes, create my action plan.':'No, not right now.'});
+  if(yes)plan();
+  else{c.msgs.push({role:'assistant',content:DECLINE});c.step='chat';save();render()}
+}
+const strip=t=>(t||'').replace(/^\s*ASK_TIME:\s*/,'');
+async function plan(){
+  const c=cur();const a={role:'assistant',content:''};
+  c.msgs.push(a);c.step='plan';busy=true;lastErr=null;ctrl=new AbortController();render();
+  const P=BASE+'\n\n'+ctx(c)+'\n'+(c.msgs.some(m=>m.ins)?'Their SWOT insights:\n'+c.msgs.filter(m=>m.ins).pop().content+'\n':'')+
+  '\nThe student agreed to an action plan. It must fit a college day of 9 AM to 4 PM: never schedule anything during college hours unless the student explicitly said they have free periods. Assume limited time and energy: short sessions after college, manageable evening tasks, flexible weekends, and time for assignments, meals, rest and sleep.\n'+
+  (c.time?'':'If the student has NOT clearly said how much time they can realistically spend outside college, reply with ONLY: ASK_TIME: followed by one friendly question about their realistic time on weekdays and weekends. Otherwise write the plan.\n')+
+  'Write the plan in simple markdown (about 450 words) with these headings: "## 1. Your main priority", "## 2. Your first small step today", "## 3. Your 7-day plan" (one bullet per day, each short), "## 4. Milestones" (a few measurable ones), "## 5. Using your strengths and opportunities", "## 6. Improving weaknesses and managing threats". Be specific to their answers, not generic. End with one relevant question, such as whether the plan feels realistic with their college schedule or which task they want to start with.';
+  try{
+    const r=await AI.ask(P,{signal:ctrl.signal,onText:({text})=>{a.content=strip(text);updateLast(a.content)}});
+    const t=(r&&r.text)||'';
+    if(/^\s*ASK_TIME:/.test(t)&&!c.time){a.content=strip(t);c.step='time'}
+    else{a.content=strip(t)||a.content;c.step='chat';c.planDone=true}
+    if(!a.content)throw{message:'The model returned an empty response. Please try again.'};
+  }catch(e){
+    if(ctrl&&ctrl.signal.aborted){if(!a.content)c.msgs.pop()}
+    else{c.msgs.pop();onFail(e)}
+  }
+  busy=false;ctrl=null;save();render();
+}
+async function converse(){
+  const c=cur();const a={role:'assistant',content:''};
+  c.msgs.push(a);busy=true;lastErr=null;ctrl=new AbortController();render();
+  const hist=c.msgs.slice(0,-1).filter(m=>m.content).slice(-14).map(m=>(m.role==='user'?'Student: ':'SWOT AI: ')+m.content).join('\n\n');
+  const P=BASE+'\n\n'+ctx(c)+'\nConversation so far:\n'+hist+'\n\nReply to the student\'s last message, briefly and warmly, asking at most one question and only if it feels natural. Do not push them to keep chatting.\n'+
+  (c.planDone?'An action plan has already been given; you may adjust parts of it if asked, keeping it realistic around college hours of 9 AM to 4 PM.':'No action plan has been created yet. Never write a plan yourself. If the student clearly agrees to get one, reply with ONLY the token [[PLAN]]. If they clearly decline, answer respectfully without pressure and end your reply with the token [[DECLINE]].');
+  const cl=t=>(t||'').replace(/\[\[(PLAN|DECLINE)\]\]/g,'').trim();
+  let go=false;
+  try{
+    const r=await AI.ask(P,{signal:ctrl.signal,onText:({text})=>{a.content=cl(text);updateLast(a.content)}});
+    const t=(r&&r.text)||'';
+    if(!c.planDone&&/\[\[PLAN\]\]/.test(t)){go=true;c.msgs.pop()}
+    else{a.content=cl(t)||a.content;if(!a.content)throw{message:'The model returned an empty response. Please try again.'};if(/\[\[DECLINE\]\]/.test(t))c.step='chat'}
+  }catch(e){
+    if(ctrl&&ctrl.signal.aborted){if(!a.content)c.msgs.pop()}
+    else{c.msgs.pop();onFail(e)}
+  }
+  busy=false;ctrl=null;save();render();
+  if(go)plan();
+}
+function retry(){
+  const c=cur();if(busy||!c)return;lastErr=null;
+  if(c.step==='ins')insights();else if(c.step==='plan')plan();else if(c.msgs.length&&c.msgs[c.msgs.length-1].role==='user')converse();else render();
+}
+function fit(){const i=$('#inp');i.style.height='auto';i.style.height=Math.min(i.scrollHeight,180)+'px';if(!busy)$('#send').disabled=!i.value.trim()}
+
+/* ---------- wiring ---------- */
+$('#send').onclick=()=>{if(busy){ctrl&&ctrl.abort()}else send($('#inp').value)};
+$('#inp').addEventListener('input',fit);
+$('#inp').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();send($('#inp').value)}});
+$('#newBtn').onclick=newChat;
+$('#burger').onclick=()=>{$('#side').classList.add('open');$('#back').classList.add('open')};
+$('#back').onclick=closeSide;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSide()});
+note();
+if(!S.chats.length||!cur()){if(S.chats.length){S.active=S.chats[0].id;render()}else newChat()}else render();
+if(cur()&&cur().step==='ins'&&!busy)insights();
+</script>
+</body>
+</html>
